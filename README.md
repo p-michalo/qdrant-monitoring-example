@@ -36,7 +36,11 @@ Script was created to monitor and logs system base metrics of CPU, RAM and DISK 
 While running the script base system metrics are being collected.
 
 	List of system metrics to monitor: 
-		- CPU Percent (CPU%) - shows the current system-wide CPU utilization as a percentage
+		- Qdrant process CPU usage Percent (QdrantCPU) - shows the Qdrant process processor usage
+		- Qdrant process memory RSS usage Percent (QdrantMem%) - shows the Qdrant process RSS memory usage as an percentage
+		- Qdrant process memory RSS usage (QdrantMem) - shows the Qdrant process RSS memory usage
+		- Qdrant process threads number (QdrantThrNum) - shows the Qdrant process number of threads
+		- CPU Percent (System CPU%) - shows the system-wide CPU utilization as a percentage
 		- Memory Swap Used (MemSwU) - shows used swap memory in bytes
 		- Memory Swap Percent (MemSw%) - shows the swap memory percentage usage calculated as (total - available) / total * 100
 		- Memory Virtual Used (MemVUsed) - shows memory used
@@ -53,32 +57,32 @@ While running the script base system metrics are being collected.
 ### Screen results
 Below is an example of the screen results. Every next record is shown after defined interval when monitoring is running:
 ```bash
-root@7416ac054043:/qdrant/storage# python3 test.py
+root@997207b22459:/qdrant/storage/qdrant# python3 monitor.py
 
-Snapshot recovery is running under PID-> 2197
+Snapshot recovery is running under PID-> 2516
+qdrant  process check passed...
 __________________________
 Monitoring in progress ...
-+------+--------+--------+------------+-------+--------+--------+--------+---------+--------+
-| CPU% | MemSwU | MemSw% |  MemVUsed  | MemV% | DiskWC | DiskRC | DiskBT |  DiskWT | DiskRT |
-+------+--------+--------+------------+-------+--------+--------+--------+---------+--------+
-| 0.1  |   0    |  0.0   | 1411092480 |  20.9 | 70758  | 11568  | 255040 | 2766993 |  3324  |
-+------+--------+--------+------------+-------+--------+--------+--------+---------+--------+
-!!!!!!!!! Starting recovery with -> https://snapshots.qdrant.io/arxiv_titles-3083016565637815127-2023-05-29-13-56-22.snapshot
-+------+--------+--------+------------+-------+--------+--------+--------+---------+--------+
-| CPU% | MemSwU | MemSw% |  MemVUsed  | MemV% | DiskWC | DiskRC | DiskBT |  DiskWT | DiskRT |
-+------+--------+--------+------------+-------+--------+--------+--------+---------+--------+
-| 9.8  |   0    |  0.0   | 1408782336 |  20.8 | 70758  | 11568  | 255040 | 2766993 |  3324  |
-+------+--------+--------+------------+-------+--------+--------+--------+---------+--------+
-+------+--------+--------+------------+-------+--------+--------+--------+---------+--------+
-| CPU% | MemSwU | MemSw% |  MemVUsed  | MemV% | DiskWC | DiskRC | DiskBT |  DiskWT | DiskRT |
-+------+--------+--------+------------+-------+--------+--------+--------+---------+--------+
-| 13.5 |   0    |  0.0   | 7086944256 |  88.8 | 50817  | 263253 | 561490 | 3646340 | 618483 |
-+------+--------+--------+------------+-------+--------+--------+--------+---------+--------+
++-----------+------------+-----------+--------------+-------------+--------+--------+----------+-------+--------+--------+--------+---------+--------+
+| QdrantCPU | QdrantMem% | QdrantMem | QdrantThrNum | System CPU% | MemSwU | MemSw% | MemVUsed | MemV% | DiskWC | DiskRC | DiskBT |  DiskWT | DiskRT |
++-----------+------------+-----------+--------------+-------------+--------+--------+----------+-------+--------+--------+--------+---------+--------+
+|    0.0    |    2.55    |   201.87  |      35      |     22.8    |  0.0   |  0.0   | 1744.93  |  25.8 | 17085  | 44726  | 57580  | 4072746 | 28129  |
++-----------+------------+-----------+--------------+-------------+--------+--------+----------+-------+--------+--------+--------+---------+--------+
++-----------+------------+-----------+--------------+-------------+--------+--------+----------+-------+--------+--------+--------+---------+--------+
+| QdrantCPU | QdrantMem% | QdrantMem | QdrantThrNum | System CPU% | MemSwU | MemSw% | MemVUsed | MemV% | DiskWC | DiskRC | DiskBT |  DiskWT | DiskRT |
++-----------+------------+-----------+--------------+-------------+--------+--------+----------+-------+--------+--------+--------+---------+--------+
+|    0.0    |    2.55    |   201.87  |      35      |     0.3     |  0.0   |  0.0   | 1761.81  |  26.0 | 17085  | 44726  | 57580  | 4072746 | 28129  |
++-----------+------------+-----------+--------------+-------------+--------+--------+----------+-------+--------+--------+--------+---------+--------+
++-----------+------------+-----------+--------------+-------------+--------+--------+----------+-------+--------+--------+--------+---------+--------+
+| QdrantCPU | QdrantMem% | QdrantMem | QdrantThrNum | System CPU% | MemSwU | MemSw% | MemVUsed | MemV% | DiskWC | DiskRC | DiskBT |  DiskWT | DiskRT |
++-----------+------------+-----------+--------------+-------------+--------+--------+----------+-------+--------+--------+--------+---------+--------+
+|    1.0    |    2.55    |   201.87  |      35      |     0.4     |  0.0   |  0.0   | 1763.79  |  26.0 | 17085  | 44726  | 57580  | 4072746 | 28129  |
++-----------+------------+-----------+--------------+-------------+--------+--------+----------+-------+--------+--------+--------+---------+--------+
 ...
 ```
 ### File results
 All the collected metrics are being saved into four svg files at the end of the script to show detailed CPU usage, Memory utilization, Disk utilization. Here are the examples:
-![20240331-184338_cpuPercent.svg](results_examples%2F20240331-184338_cpuPercent.svg)
-![20240331-184338_memSwap.svg](results_examples%2F20240331-184338_memSwap.svg)
-![20240331-184338_memVirt.svg](results_examples%2F20240331-184338_memVirt.svg)
-![20240331-184338diskIO.svg](results_examples%2F20240331-184338diskIO.svg)
+![20240403-211240_cpuPercent.svg](results_examples%2F20240403-211240_cpuPercent.svg)
+![20240403-211240_memSwap.svg](results_examples%2F20240403-211240_memSwap.svg)
+![20240403-211240_memVirt.svg](results_examples%2F20240403-211240_memVirt.svg)
+![20240403-211240diskIO.svg](results_examples%2F20240403-211240diskIO.svg)
